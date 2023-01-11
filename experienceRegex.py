@@ -6,8 +6,8 @@ import re, pyperclip
 # Search for 'years', with number preceding
 yearsExperienceRegex = re.compile(r'''
     \d(?:-\d)?      # number of years (account for range)
-    (?:\+)?         # with a plus (optional)
-    (?:\syear(?:s)?)    # years with space before
+    \+?             # with a plus (optional)
+    \syear(?:s)?    # years with space before
 ''', re.VERBOSE)
 
 # Get text off of clipboard
