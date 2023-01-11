@@ -2,8 +2,6 @@
 
 import re, pyperclip
 
-textTest = 'Looking for 7-8 years of experience'
-
 # Regex for years of experience on job posting
 # Search for 'years', with number preceding
 yearsExperienceRegex = re.compile(r'''
@@ -12,7 +10,8 @@ yearsExperienceRegex = re.compile(r'''
     (?:\syear(?:s)?)    # years with space before
 ''', re.VERBOSE)
 
+# Get text off of clipboard
+textTest = pyperclip.paste()
+
 results = yearsExperienceRegex.findall(textTest)
 print(results)
-
-
