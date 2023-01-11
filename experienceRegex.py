@@ -23,8 +23,8 @@ skillsRegex = re.compile(r'''
         front(?:\s|-)?end               |
         full(?:\s|-)?stack              |
         java(?:\s|-)?script(?:es6+)?    |
-        html                            |
-        css                             |
+        html(?:5)?                      |
+        css(?:3)?                       |
         react(?:\s|-)?(?:native)?       |
         redux                           |
         node                            |
