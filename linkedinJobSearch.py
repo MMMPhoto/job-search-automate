@@ -21,17 +21,19 @@ jobResults = api.search_jobs(
     limit=10
 )
 
-jobId = jobResults[0].get('dashEntityUrn').removeprefix('urn:li:fsd_jobPosting:') # get the value holding job number (and remove extraneous prefix)
+# Iterate search results to get full job data by ID
+fullJobResults = []
 
-pprint.pp(jobId)
+for i in range(len(jobResults) - 1):
+    jobId = jobResults[i].get('dashEntityUrn').removeprefix('urn:li:fsd_jobPosting:') # get the value holding job number (and remove extraneous prefix)
+    # pprint.pp(jobId)
+    job = api.get_job(jobId) # search for job by ID
+    # pprint.pp(job)
+    fullJobResults.append(job) # add to list
 
-# Search job by ID
-job = api.get_job(jobId)
-
-pprint.pp(job)
-
-# jobFile = open('./jobTestFile.json', 'w')
-# jobFile.write(json.dumps(jobResults))
+# pprint.pp(fullJobResults)
+jobFile = open('./jobTestFile.json', 'w')
+jobFile.write(json.dumps(fullJobResults))
 
 # # GET a profile
 # profile = api.get_profile('billy-g')
