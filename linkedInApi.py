@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 
 # Import modules
-import os, pprint
+import os, pprint, json
 from linkedin_api import Linkedin
 from dotenv import load_dotenv
 
@@ -15,6 +15,9 @@ api = Linkedin(user, pw)
 
 job = api.get_job(3416900022)
 pprint.pp(job)
+
+jobFile = open('./jobTestFile.json', 'w')
+jobFile.write(json.dumps(job))
 
 # # GET a profile
 # profile = api.get_profile('billy-g')
