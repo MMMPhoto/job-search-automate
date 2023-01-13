@@ -67,4 +67,4 @@ print(skills)
 
 # Things to improve Regex:
     # 'aws' in skills pulls random letters from other words
-    # mention of ages like '18 years old' or '21 years old' get flagged - exclude above a certain number?
+    # exclude above a certain number? how?
