@@ -13,11 +13,25 @@ pw = os.getenv('LINKEDIN_PW')
 # Autheniticate Linkedin account
 api = Linkedin(user, pw)
 
-job = api.get_job(3416900022)
+# Search jobs
+jobResults = api.search_jobs(
+    keywords='software developer',
+    experience=['2'],
+    location_name='Atlanta, Georgia, United States',
+    limit=10
+)
+
+jobId = jobResults[0].get('dashEntityUrn').removeprefix('urn:li:fsd_jobPosting:') # get the value holding job number (and remove extraneous prefix)
+
+pprint.pp(jobId)
+
+# Search job by ID
+job = api.get_job(jobId)
+
 pprint.pp(job)
 
-jobFile = open('./jobTestFile.json', 'w')
-jobFile.write(json.dumps(job))
+# jobFile = open('./jobTestFile.json', 'w')
+# jobFile.write(json.dumps(jobResults))
 
 # # GET a profile
 # profile = api.get_profile('billy-g')
