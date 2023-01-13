@@ -3,7 +3,7 @@
 import re
 
 # Search for 'year(s)', with number preceding
-def searchYears(text):
+def yearsSearch(text):
     yearsExperienceRegex = re.compile(r'''
         \d(?:-\d)?      # number of years (account for range)
         \+?             # with a plus (optional)
@@ -12,7 +12,7 @@ def searchYears(text):
     return yearsExperienceRegex.findall(text)
 
 # Search for 'year(s), with context characters before and after
-def yearsSearch(text):
+def yearsContextSearch(text):
     yearsContextRegex = re.compile(r'''
         .{0,20}         # Get 20 characters before match
         \syear(?:s)?    # years with space before

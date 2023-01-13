@@ -4,6 +4,7 @@
 import os, pprint, json
 from linkedin_api import Linkedin
 from dotenv import load_dotenv
+from experienceRegex import yearsSearch, yearsContextSearch, skillsSearch
 
 # Handle environment variables
 load_dotenv()
@@ -34,6 +35,9 @@ for i in range(len(jobResults) - 1):
     basicJob['title'] = job['title']
     basicJob['company'] = job['companyDetails']['com.linkedin.voyager.deco.jobs.web.shared.WebCompactJobPostingCompany']['companyResolutionResult']['name']
     basicJob['description'] = job['description']['text']
+    basicJob['years experience'] = yearsSearch(job['description']['text'])
+    basicJob['years context'] = yearsContextSearch(job['description']['text'])
+    basicJob['skills'] = skillsSearch(job['description']['text'])
     basicJob['listedAt'] = job['listedAt']
 
     fullJobResults.append(basicJob) # add to list
