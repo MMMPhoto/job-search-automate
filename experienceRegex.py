@@ -61,9 +61,9 @@ years = yearsSearch(text)
 context = yearsContextSearch(text)
 skills = skillsSearch(text)
 
-print(years)
-print(context)
-print(skills)
+# print(years)
+# print(context)
+# print(skills)
 
 # Things to improve Regex:
     # 'aws' in skills pulls random letters from other words
