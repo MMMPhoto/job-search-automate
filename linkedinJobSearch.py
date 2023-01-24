@@ -3,6 +3,7 @@
 # Import modules
 import os, pprint, json, pygsheets
 import pandas as pd
+import datetime as dt
 from linkedin_api import Linkedin
 from dotenv import load_dotenv
 from experienceRegex import yearsSearch, yearsContextSearch, skillsSearch
@@ -11,7 +12,7 @@ from experienceRegex import yearsSearch, yearsContextSearch, skillsSearch
 load_dotenv()
 user = os.getenv('LINKEDIN_USERNAME')
 pw = os.getenv('LINKEDIN_PW')
-gc = pygsheets.authorize(service_file='./job-search-service.json')
+googleSheets = pygsheets.authorize(service_file='./job-search-service.json')
 
 # Test data to dataframe
 with open('./jobTestFile.json', 'r') as file:
@@ -59,21 +60,29 @@ pprint.pp(jobs)
 # jobFile.write(json.dumps(fullJobResults))
 
 # Clean up data
-# Add URL
 for job in jobs:
+  # Add URL
   id = job['jobId']
   print(id)
   job['url'] = f'https://www.linkedin.com/jobs/view/{id}/'
+
+  # Clean up date
+  # secs = job['listedAt'] % 86400
+  # days = job['listedAt'] / 86400
+  # print(days)
+
+  print(dt.datetime.now())
+
 
 # Write to google drive:
 # Create Dataframe
 df = pd.DataFrame(jobs)
 
-#Open google spreadsheet (string parameter is name of sheet)
-sh = gc.open('Automated Job Search')
-
-#select the first sheet 
-wks = sh[0]
+#Open google spreadsheet, get 
+sheet = googleSheets.open('Automated Job Search')
+wks = sheet[0]
+listIds = wks.get_col(1)
+print(listIds)
 
 #update the first sheet with df, starting at cell B2. 
-wks.set_dataframe(df,(1,1))
+# wks.set_dataframe(df,(1,1))
