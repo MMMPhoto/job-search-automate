@@ -15,11 +15,8 @@ gc = pygsheets.authorize(service_file='./job-search-service.json')
 
 # Test data to dataframe
 with open('./jobTestFile.json', 'r') as file:
-  savedJobs = json.load(file)
-pprint.pp(savedJobs)
-
-# Create Dataframe
-df = pd.DataFrame(savedJobs)
+  jobs = json.load(file)
+pprint.pp(jobs)
 
 # # Autheniticate Linkedin account
 # api = Linkedin(user, pw)
@@ -61,11 +58,16 @@ df = pd.DataFrame(savedJobs)
 # jobFile = open('./jobTestFile.json', 'w')
 # jobFile.write(json.dumps(fullJobResults))
 
+# Clean up data
+# Add URL
+for job in jobs:
+  id = job['jobId']
+  print(id)
+  job['url'] = f'https://www.linkedin.com/jobs/view/{id}/'
 
-# # Write to google drive test:
-
-# # Create a column
-# df['name'] = ['John', 'Steve', 'Sarah']
+# Write to google drive:
+# Create Dataframe
+df = pd.DataFrame(jobs)
 
 #Open google spreadsheet (string parameter is name of sheet)
 sh = gc.open('Automated Job Search')
