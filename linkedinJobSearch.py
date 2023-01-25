@@ -40,14 +40,13 @@ pprint.pp(jobs)
 
 #     # Create new dictionary with only necessary data
 #     basicJob = {}
-#     basicJob['jobId'] = jobId
-#     basicJob['title'] = job['title']
-#     basicJob['company'] = job['companyDetails']['com.linkedin.voyager.deco.jobs.web.shared.WebCompactJobPostingCompany']['companyResolutionResult']['name']
-#     basicJob['description'] = job['description']['text']
-#     basicJob['years experience'] = yearsSearch(job['description']['text'])
-#     basicJob['years context'] = yearsContextSearch(job['description']['text'])
-#     basicJob['skills'] = skillsSearch(job['description']['text'])
-#     basicJob['listedAt'] = job['listedAt']
+#     basicJob['Job Id'] = jobId
+#     basicJob['Job Title'] = job['title']
+#     basicJob['Company'] = job['companyDetails']['com.linkedin.voyager.deco.jobs.web.shared.WebCompactJobPostingCompany']['companyResolutionResult']['name']
+#     basicJob['Description'] = job['description']['text']
+#     basicJob['Years Experience'] = yearsSearch(job['description']['text'])
+#     basicJob['Years Context'] = yearsContextSearch(job['description']['text'])
+#     basicJob['Skills'] = skillsSearch(job['description']['text'])
 
 #     fullJobResults.append(basicJob) # add to list
 
@@ -63,7 +62,7 @@ pprint.pp(jobs)
 sheet = googleSheets.open('Automated Job Search')
 wks = sheet[0]
 existingIds = wks.get_col(1, include_tailing_empty=False) # Get job numbers in column 1
-del existingIds[0]
+# del existingIds[0]
 
 # Clean up data
 for job in jobs:
@@ -76,10 +75,15 @@ for job in jobs:
   id = job['jobId']
   job['url'] = f'https://www.linkedin.com/jobs/view/{id}/'
 
+  # Add current date
+  dateAdded = dt.datetime.now().date()
+  job['Date Added'] = dateAdded
+
 
 # Write to google drive:
 # Create Dataframe
 df = pd.DataFrame(jobs)
 
-#update the first sheet with df, starting at cell B2. 
-# wks.set_dataframe(df,(1,1))
+#update the first sheet with df, starting at cell B2
+# wks.set_dataframe(df,(2,1), copy_head=False)
+wks.set_dataframe(df,(1,1))
