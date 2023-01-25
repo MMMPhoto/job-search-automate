@@ -24,7 +24,7 @@ if fileSize != 0:
     jobsInJson = json.load(file)
 else:
   jobsInJson = []
-  # pprint.pp(jobsInJson)
+pprint.pp(jobsInJson)
 
 #Open google spreadsheet, get existing job IDs
 sheet = googleSheets.open('Automated Job Search')
@@ -39,7 +39,7 @@ searchResults = api.search_jobs(
   location_name='Atlanta, Georgia, United States',
   limit=10
 )
-# pprint.pp(searchResults)
+pprint.pp(searchResults)
 
 # Iterate search results to get full job data by ID
 newJobs = []
@@ -53,8 +53,8 @@ for result in searchResults:
       
     # Create new dictionary with only necessary data
     jobClean = {}
-    jobClean['Date Added'] = dt.datetime.now().date()
-    jobClean['Job Id'] = jobId
+    jobClean['Date Added'] = dt.datetime.now().date().strftime('%m/%d/%Y')
+    jobClean['Job ID'] = jobId
     jobClean['Url'] = f'https://www.linkedin.com/jobs/view/{jobId}/'
     jobClean['Job Title'] = job['title']
     jobClean['Company'] = job['companyDetails']['com.linkedin.voyager.deco.jobs.web.shared.WebCompactJobPostingCompany']['companyResolutionResult']['name']
@@ -63,20 +63,20 @@ for result in searchResults:
     jobClean['Years Context'] = yearsContextSearch(job['description']['text'])
     jobClean['Skills'] = skillsSearch(job['description']['text'])
 
-    newJobs.append(jobClean) # add to list
+    jobsInJson.append(jobClean) # add to JSON job list
 
     # Format years experience
-    jobClean['years experience'] = '\n'.join(jobClean['years experience'])
+    jobClean['Years Experience'] = '\n'.join(jobClean['Years Experience'])
 
     # Format years context
-    contextList = jobClean['years context']
+    contextList = jobClean['Years Context']
     contextFormat = []
     for context in contextList:
       contextFormat.append(f'....{context}....')
-    jobClean['years context'] = '\n'.join(contextFormat)
+    jobClean['Years Context'] = '\n'.join(contextFormat)
 
     # Format skills
-    skills = jobClean['skills']
+    skills = jobClean['Skills']
     skillsTemp = []
     skillsCount = []
     for skill in skills:
@@ -84,18 +84,19 @@ for result in searchResults:
         skillsTemp.append(skill)
         count = skills.count(skill)
         skillsCount.append(f'{skill}({count})')
-    jobClean['skills'] = '\n'.join(skillsCount)
+    jobClean['Skills'] = '\n'.join(skillsCount)
 
-# pprint.pp(newJobs)
+    newJobs.append(jobClean) # add to new jobs list for sheets
 
-# # Write to JSON file
-# jobFile = open('./jobTestFile.json', 'w')
-# jobFile.write(json.dumps(fullJobResults))
+pprint.pp(jobsInJson)
+pprint.pp(newJobs)
+
+# Write to JSON file
+with open('./jobSearchData.json', 'w') as newFile:
+  json.dumps(jobsInJson)
+print('Wrote new jobs data to local JSON file')
 
 # Write to google drive:
-# Create Dataframe
-df = pd.DataFrame(jobs)
-
-#update the first sheet with df, starting at cell B2
-# wks.set_dataframe(df,(2,1), copy_head=False)
+df = pd.DataFrame(newJobs) # create dataframe
 wks.set_dataframe(df, ((numRowsExisting + 1),1), copy_head=False, extend=True) # set dataframe to sheet on first empty row
+print('Wrote new jobs data to google sheet')
