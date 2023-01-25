@@ -93,7 +93,8 @@ pprint.pp(newJobs)
 
 # Write to JSON file
 with open('./jobSearchData.json', 'w') as newFile:
-  json.dumps(jobsInJson)
+  newFile.write(json.dumps(jobsInJson))
+  newFile.close()
 print('Wrote new jobs data to local JSON file')
 
 # Write to google drive:
