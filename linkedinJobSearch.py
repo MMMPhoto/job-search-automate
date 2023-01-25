@@ -28,6 +28,7 @@ del existingIds[0]
 
 # Clean up data
 for job in jobs:
+
   # Remove job if already in spreadsheet
   if job['jobId'] in existingIds:
     jobs.remove(job)
@@ -41,10 +42,26 @@ for job in jobs:
   dateAdded = dt.datetime.now().date()
   job['Date Added'] = dateAdded
 
-  # Join lists as strings w/ line breaks
+  # Format years experience
   job['years experience'] = '\n'.join(job['years experience'])
-  job['years context'] = '\n'.join(job['years context'])
-  job['skills'] = '\n'.join(job['skills'])
+
+  # Format years context
+  contextList = job['years context']
+  contextFormat = []
+  for context in contextList:
+    contextFormat.append(f'....{context}....')
+  job['years context'] = '\n'.join(contextFormat)
+
+  # Format skills
+  skills = job['skills']
+  skillsTemp = []
+  skillsCount = []
+  for skill in skills:
+    if skill not in skillsTemp:
+      skillsTemp.append(skill)
+      count = skills.count(skill)
+      skillsCount.append(f'{skill}({count})')
+  job['skills'] = '\n'.join(skillsCount)
 
 
 # # Autheniticate Linkedin account

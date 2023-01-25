@@ -15,7 +15,7 @@ def yearsSearch(text):
 def yearsContextSearch(text):
     yearsContextRegex = re.compile(r'''
         .{0,20}         # Get 20 characters before match
-        \syear(?:s)?    # years with space before
+        \syear(?:s)?    # year(s) with space before
         .{0,100}         # Get 100 characters after match
     ''', re.VERBOSE)
     return yearsContextRegex.findall(text)
