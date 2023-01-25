@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from experienceRegex import yearsSearch, yearsContextSearch, skillsSearch
 
 
-def linkedinSearch(searchKeywords, radius, remoteOption, resultsNumber ):
+def linkedinSearch(searchKeywords, radius, remoteOption, resultsNumber, existingIds, jobsInJson):
 
   # Handle environment variables
   load_dotenv()
@@ -80,13 +80,13 @@ def linkedinSearch(searchKeywords, radius, remoteOption, resultsNumber ):
   pprint.pp(jobsInJson)
   pprint.pp(f'new jobs: {newJobs}')
 
-  # Write to JSON file
-  with open('./jobSearchData.json', 'w') as newFile:
-    newFile.write(json.dumps(jobsInJson))
-    newFile.close()
-  print('Wrote new jobs data to local JSON file')
+  # # Write to JSON file
+  # with open('./jobSearchData.json', 'w') as newFile:
+  #   newFile.write(json.dumps(jobsInJson))
+  #   newFile.close()
+  # print('Wrote new jobs data to local JSON file')
 
-  # Write to google drive:
-  df = pd.DataFrame(newJobs) # create dataframe
-  wks.set_dataframe(df, ((numRowsExisting + 1),2), copy_head=False, extend=True) # set dataframe to sheet on first empty row
-  print('Wrote new jobs data to google sheet')
+  # # Write to google drive:
+  # df = pd.DataFrame(newJobs) # create dataframe
+  # wks.set_dataframe(df, ((numRowsExisting + 1),2), copy_head=False, extend=True) # set dataframe to sheet on first empty row
+  # print('Wrote new jobs data to google sheet')
