@@ -19,23 +19,51 @@ with open('./jobTestFile.json', 'r') as file:
   jobs = json.load(file)
 # pprint.pp(jobs)
 
+#Open google spreadsheet, get existing job IDs
+sheet = googleSheets.open('Automated Job Search')
+wks = sheet[0]
+existingIds = wks.get_col(1, include_tailing_empty=False) # Get job numbers in column 1
+numRowsExisting = len(existingIds)
+del existingIds[0]
+
+# Clean up data
+for job in jobs:
+  # Remove job if already in spreadsheet
+  if job['jobId'] in existingIds:
+    jobs.remove(job)
+  # pprint.pp(jobs)
+
+  # Add URL
+  id = job['jobId']
+  job['url'] = f'https://www.linkedin.com/jobs/view/{id}/'
+
+  # Add current date
+  dateAdded = dt.datetime.now().date()
+  job['Date Added'] = dateAdded
+
+  # Join lists as strings w/ line breaks
+  job['years experience'] = '\n'.join(job['years experience'])
+  job['years context'] = '\n'.join(job['years context'])
+  job['skills'] = '\n'.join(job['skills'])
+
+
 # # Autheniticate Linkedin account
 # api = Linkedin(user, pw)
 
-# # Search jobs
-# jobResults = api.search_jobs(
+# # Search new jobs
+# searchResults = api.search_jobs(
 #     keywords='software developer',
 #     location_name='Atlanta, Georgia, United States',
 #     limit=10
 # )
 
 # # Print to console (test variable)
-# # pprint.pp(jobResults)
+# # pprint.pp(searchResults)
 
 # # Iterate search results to get full job data by ID
 # fullJobResults = []
-# for i in range(len(jobResults) - 1):
-#     jobId = jobResults[i].get('dashEntityUrn').removeprefix('urn:li:fsd_jobPosting:') # get the value holding job number (and remove extraneous prefix)
+# for i in range(len(searchResults) - 1):
+#     jobId = searchResults[i].get('dashEntityUrn').removeprefix('urn:li:fsd_jobPosting:') # get the value holding job number (and remove extraneous prefix)
 #     job = api.get_job(jobId) # search for job by ID
 
 #     # Create new dictionary with only necessary data
@@ -58,36 +86,10 @@ with open('./jobTestFile.json', 'r') as file:
 # jobFile = open('./jobTestFile.json', 'w')
 # jobFile.write(json.dumps(fullJobResults))
 
-#Open google spreadsheet, get 
-sheet = googleSheets.open('Automated Job Search')
-wks = sheet[0]
-existingIds = wks.get_col(1, include_tailing_empty=False) # Get job numbers in column 1
-# del existingIds[0]
-
-# Clean up data
-for job in jobs:
-  # Remove job if already in spreadsheet
-  if job['jobId'] in existingIds:
-    jobs.remove(job)
-  # pprint.pp(jobs)
-
-  # Add URL
-  id = job['jobId']
-  job['url'] = f'https://www.linkedin.com/jobs/view/{id}/'
-
-  # Add current date
-  dateAdded = dt.datetime.now().date()
-  job['Date Added'] = dateAdded
-
-  # Reorder lists as strings
-  job['years experience'] = '\n'.join(job['years experience'])
-  job['years context'] = '\n'.join(job['years context'])
-  job['skills'] = '\n'.join(job['skills'])
-
 # Write to google drive:
 # Create Dataframe
 df = pd.DataFrame(jobs)
 
 #update the first sheet with df, starting at cell B2
 # wks.set_dataframe(df,(2,1), copy_head=False)
-wks.set_dataframe(df,(1,1))
+wks.set_dataframe(df, ((numRowsExisting + 1),1), copy_head=False, extend=True) # set dataframe to sheet on first empty row
