@@ -6,11 +6,10 @@ import re
 def yearsSearch(text):
     yearsExperienceRegex = re.compile(r'''
         \d(?:-?\d)?     # number of years (account for range)
-        (?:!18|21)      # exclude 18 or 21
         \+?             # with a plus (optional)
         \syear(?:s)?    # years with space before
     ''', re.VERBOSE)
-    return yearsExperienceRegex.findall(text)
+    return list(filter(None, yearsExperienceRegex.findall(text)))
 
 # Search for 'year(s), with context characters before and after
 def yearsContextSearch(text):
@@ -61,9 +60,9 @@ years = yearsSearch(text)
 context = yearsContextSearch(text)
 skills = skillsSearch(text)
 
-# print(years)
-# print(context)
-# print(skills)
+print(years)
+print(context)
+print(skills)
 
 # Things to improve Regex:
     # 'aws' in skills pulls random letters from other words

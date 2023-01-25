@@ -59,30 +59,27 @@ pprint.pp(jobs)
 # jobFile = open('./jobTestFile.json', 'w')
 # jobFile.write(json.dumps(fullJobResults))
 
+#Open google spreadsheet, get 
+sheet = googleSheets.open('Automated Job Search')
+wks = sheet[0]
+existingIds = wks.get_col(1, include_tailing_empty=False) # Get job numbers in column 1
+del existingIds[0]
+
 # Clean up data
 for job in jobs:
+  # Remove job if already in spreadsheet
+  if job['jobId'] in existingIds:
+    jobs.remove(job)
+  pprint.pp(jobs)
+
   # Add URL
   id = job['jobId']
-  print(id)
   job['url'] = f'https://www.linkedin.com/jobs/view/{id}/'
-
-  # Clean up date
-  # secs = job['listedAt'] % 86400
-  # days = job['listedAt'] / 86400
-  # print(days)
-
-  print(dt.datetime.now())
 
 
 # Write to google drive:
 # Create Dataframe
 df = pd.DataFrame(jobs)
-
-#Open google spreadsheet, get 
-sheet = googleSheets.open('Automated Job Search')
-wks = sheet[0]
-listIds = wks.get_col(1)
-print(listIds)
 
 #update the first sheet with df, starting at cell B2. 
 # wks.set_dataframe(df,(1,1))
