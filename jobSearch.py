@@ -24,7 +24,8 @@ if fileSize != 0:
     jobsInJson = json.load(file)
 else:
   jobsInJson = []
-# pprint.pp(jobsInJson)
+pprint.pp(jobsInJson)
+print('Opened local Json document...')
 
 #Open google spreadsheet, get existing job IDs
 sheet = googleSheets.open('Automated Job Search')
@@ -32,16 +33,19 @@ wks = sheet[0]
 existingIds = wks.get_col(3, include_tailing_empty=False) # Get job numbers in column 1
 numRowsExisting = len(existingIds)
 del existingIds[0]
+print('Opened google sheet...')
 
 # Search new jobs
 searchResults = api.search_jobs(
-  keywords='software developer',
+  # keywords='software developer',
   location_name='Atlanta, Georgia, United States',
   distance=3000,
+  listed_at=604800,
   remote=True,
-  limit=10
+  limit=-1
 )
 # pprint.pp(searchResults)
+print(f'Received {len(searchResults)} search results...')
 
 # Iterate search results to get full job data by ID
 newJobs = []
@@ -58,13 +62,13 @@ for result in searchResults:
     jobClean['Date Added'] = dt.datetime.now().date().strftime('%m/%d/%Y')
     jobClean['Job ID'] = jobId
     jobClean['URL'] = f'https://www.linkedin.com/jobs/view/{jobId}/'
-    jobClean['Job Title'] = job['title']
-    jobClean['Company'] = job['companyDetails']['com.linkedin.voyager.deco.jobs.web.shared.WebCompactJobPostingCompany']['companyResolutionResult']['name']
-    jobClean['Description'] = job['description']['text']
-    jobClean['Years Experience'] = yearsSearch(job['description']['text'])
-    jobClean['Years Context'] = yearsContextSearch(job['description']['text'])
-    jobClean['Skills'] = skillsSearch(job['description']['text'])
-    jobClean['Remote Allowed'] = job['workRemoteAllowed']
+    jobClean['Job Title'] = job.get('title')
+    jobClean['Company'] = job.get('companyDetails', {}).get('com.linkedin.voyager.deco.jobs.web.shared.WebCompactJobPostingCompany', {}).get('companyResolutionResult', {}).get('name')
+    jobClean['Description'] = job.get('description', {}).get('text')
+    jobClean['Years Experience'] = yearsSearch(jobClean['Description'])
+    jobClean['Years Context'] = yearsContextSearch(jobClean['Description'])
+    jobClean['Skills'] = skillsSearch(jobClean['Description'])
+    jobClean['Remote Allowed'] = job.get('workRemoteAllowed')
 
     jobsInJson.append(jobClean) # add to JSON job list
 
@@ -91,16 +95,24 @@ for result in searchResults:
 
     newJobs.append(jobClean) # add to new jobs list for sheets
 
-pprint.pp(jobsInJson)
-pprint.pp(f'new jobs: {newJobs}')
+# pprint.pp(jobsInJson)
+# pprint.pp(f'new jobs: {newJobs}')
+print('Cleaned up search results...')
+
 
 # Write to JSON file
-with open('./jobSearchData.json', 'w') as newFile:
-  newFile.write(json.dumps(jobsInJson))
-  newFile.close()
-print('Wrote new jobs data to local JSON file')
+if len(jobsInJson) != 0:
+  with open('./jobSearchData.json', 'w') as newFile:
+    newFile.write(json.dumps(jobsInJson))
+    newFile.close()
+  print(f'Wrote {len(jobsInJson)} new jobs data to local JSON file!')
+else:
+  print('There were no new jobs to write to loccal JSON file!')
 
 # Write to google drive:
-df = pd.DataFrame(newJobs) # create dataframe
-wks.set_dataframe(df, ((numRowsExisting + 1),2), copy_head=False, extend=True) # set dataframe to sheet on first empty row
-print('Wrote new jobs data to google sheet')
+if len(newJobs) != 0:    
+  df = pd.DataFrame(newJobs) # create dataframe
+  wks.set_dataframe(df, ((numRowsExisting + 1),2), copy_head=False, extend=True) # set dataframe to sheet on first empty row
+  print(f'Wrote {len(newJobs)} new jobs data to google sheet!')
+else:
+  print('There were no new jobs to write to google sheet!')
