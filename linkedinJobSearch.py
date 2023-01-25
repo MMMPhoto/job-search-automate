@@ -17,7 +17,7 @@ googleSheets = pygsheets.authorize(service_file='./job-search-service.json')
 # Test data to dataframe
 with open('./jobTestFile.json', 'r') as file:
   jobs = json.load(file)
-pprint.pp(jobs)
+# pprint.pp(jobs)
 
 # # Autheniticate Linkedin account
 # api = Linkedin(user, pw)
@@ -54,7 +54,7 @@ pprint.pp(jobs)
 # pprint.pp(fullJobResults)
 
 
-
+# # Write to JSON file
 # jobFile = open('./jobTestFile.json', 'w')
 # jobFile.write(json.dumps(fullJobResults))
 
@@ -69,7 +69,7 @@ for job in jobs:
   # Remove job if already in spreadsheet
   if job['jobId'] in existingIds:
     jobs.remove(job)
-  pprint.pp(jobs)
+  # pprint.pp(jobs)
 
   # Add URL
   id = job['jobId']
@@ -79,6 +79,10 @@ for job in jobs:
   dateAdded = dt.datetime.now().date()
   job['Date Added'] = dateAdded
 
+  # Reorder lists as strings
+  job['years experience'] = '\n'.join(job['years experience'])
+  job['years context'] = '\n'.join(job['years context'])
+  job['skills'] = '\n'.join(job['skills'])
 
 # Write to google drive:
 # Create Dataframe
