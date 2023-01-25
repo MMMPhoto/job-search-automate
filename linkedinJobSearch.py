@@ -29,7 +29,7 @@ pprint.pp(jobsInJson)
 #Open google spreadsheet, get existing job IDs
 sheet = googleSheets.open('Automated Job Search')
 wks = sheet[0]
-existingIds = wks.get_col(1, include_tailing_empty=False) # Get job numbers in column 1
+existingIds = wks.get_col(3, include_tailing_empty=False) # Get job numbers in column 1
 numRowsExisting = len(existingIds)
 del existingIds[0]
 
@@ -37,6 +37,8 @@ del existingIds[0]
 searchResults = api.search_jobs(
   keywords='software developer',
   location_name='Atlanta, Georgia, United States',
+  distance=3000,
+  remote=True,
   limit=10
 )
 pprint.pp(searchResults)
@@ -55,7 +57,7 @@ for result in searchResults:
     jobClean = {}
     jobClean['Date Added'] = dt.datetime.now().date().strftime('%m/%d/%Y')
     jobClean['Job ID'] = jobId
-    jobClean['Url'] = f'https://www.linkedin.com/jobs/view/{jobId}/'
+    jobClean['URL'] = f'https://www.linkedin.com/jobs/view/{jobId}/'
     jobClean['Job Title'] = job['title']
     jobClean['Company'] = job['companyDetails']['com.linkedin.voyager.deco.jobs.web.shared.WebCompactJobPostingCompany']['companyResolutionResult']['name']
     jobClean['Description'] = job['description']['text']
@@ -89,7 +91,7 @@ for result in searchResults:
     newJobs.append(jobClean) # add to new jobs list for sheets
 
 pprint.pp(jobsInJson)
-pprint.pp(newJobs)
+pprint.pp(f'new jobs: {newJobs}')
 
 # Write to JSON file
 with open('./jobSearchData.json', 'w') as newFile:
@@ -99,5 +101,5 @@ print('Wrote new jobs data to local JSON file')
 
 # Write to google drive:
 df = pd.DataFrame(newJobs) # create dataframe
-wks.set_dataframe(df, ((numRowsExisting + 1),1), copy_head=False, extend=True) # set dataframe to sheet on first empty row
+wks.set_dataframe(df, ((numRowsExisting + 1),2), copy_head=False, extend=True) # set dataframe to sheet on first empty row
 print('Wrote new jobs data to google sheet')
