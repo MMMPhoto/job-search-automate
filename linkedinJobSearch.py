@@ -19,10 +19,11 @@ api = Linkedin(user, pw)
 
 # Open local JSON file
 fileSize = os.stat('./jobSearchData.json').st_size
-print(fileSize)
 if fileSize != 0: 
   with open('./jobSearchData.json', 'r') as file:
     jobsInJson = json.load(file)
+else:
+  jobsInJson = []
   # pprint.pp(jobsInJson)
 
 #Open google spreadsheet, get existing job IDs
