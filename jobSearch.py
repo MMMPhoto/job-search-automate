@@ -25,7 +25,7 @@ if fileSize != 0:
 else:
   jobsInJson = []
 pprint.pp(jobsInJson)
-print('Opened local Json document...')
+print(f'Opened local Json document, found {len(jobsInJson)} jobs...')
 
 #Open google spreadsheet, get existing job IDs
 sheet = googleSheets.open('Automated Job Search')
@@ -33,11 +33,11 @@ wks = sheet[0]
 existingIds = wks.get_col(3, include_tailing_empty=False) # Get job numbers in column 1
 numRowsExisting = len(existingIds)
 del existingIds[0]
-print('Opened google sheet...')
+print(f'Opened google sheet, found {len(existingIds)} jobs...')
 
 # Search new jobs
 searchResults = api.search_jobs(
-  # keywords='software developer',
+  keywords='software developer',
   location_name='Atlanta, Georgia, United States',
   distance=3000,
   listed_at=604800,
@@ -94,10 +94,11 @@ for result in searchResults:
     jobClean['Skills'] = '\n'.join(skillsCount)
 
     newJobs.append(jobClean) # add to new jobs list for sheets
+    print(f'Cleaned up {len(newJobs)} new jobs...')
 
 # pprint.pp(jobsInJson)
 # pprint.pp(f'new jobs: {newJobs}')
-print('Cleaned up search results...')
+print('Finished cleaning up search results...')
 
 
 # Write to JSON file
@@ -107,7 +108,7 @@ if len(jobsInJson) != 0:
     newFile.close()
   print(f'Wrote {len(jobsInJson)} new jobs data to local JSON file!')
 else:
-  print('There were no new jobs to write to loccal JSON file!')
+  print('There were no new jobs to write to local JSON file!')
 
 # Write to google drive:
 if len(newJobs) != 0:    
