@@ -24,7 +24,7 @@ if fileSize != 0:
     jobsInJson = json.load(file)
 else:
   jobsInJson = []
-pprint.pp(jobsInJson)
+# pprint.pp(jobsInJson)
 
 #Open google spreadsheet, get existing job IDs
 sheet = googleSheets.open('Automated Job Search')
@@ -41,7 +41,7 @@ searchResults = api.search_jobs(
   remote=True,
   limit=10
 )
-pprint.pp(searchResults)
+# pprint.pp(searchResults)
 
 # Iterate search results to get full job data by ID
 newJobs = []
@@ -64,6 +64,7 @@ for result in searchResults:
     jobClean['Years Experience'] = yearsSearch(job['description']['text'])
     jobClean['Years Context'] = yearsContextSearch(job['description']['text'])
     jobClean['Skills'] = skillsSearch(job['description']['text'])
+    jobClean['Remote Allowed'] = job['workRemoteAllowed']
 
     jobsInJson.append(jobClean) # add to JSON job list
 
