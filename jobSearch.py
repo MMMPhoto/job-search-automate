@@ -1,11 +1,5 @@
 #! /usr/bin/env python3
 
-# Import modules
-# import os, pprint, json, pygsheets
-# import pandas as pd
-# import datetime as dt
-# from linkedin_api import Linkedin
-# from dotenv import load_dotenv
 from readWriteFiles import readFromJson, readFromSheets, writeToJson, writeToGoogleDrive
 from linkedinJobSearch import linkedinJobSearch, sortJobResults
 
