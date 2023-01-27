@@ -10,19 +10,14 @@ from experienceRegex import yearsSearch, yearsContextSearch, skillsSearch
 
 # Handle environment variables, authentication
 load_dotenv()
-user = os.getenv('LINKEDIN_USERNAME')
-pw = os.getenv('LINKEDIN_PW')
 localJson = os.getenv('local_JSON_file')
 googleSheetsFile = os.getenv('google_sheets_file')
 googleSheets = pygsheets.authorize(service_file='./job-search-service.json')
 
-# Autheniticate Linkedin account
-api = Linkedin(user, pw)
-
 # Open local JSON file
-fileSize = os.stat('./jobSearchData.json').st_size
+fileSize = os.stat(f'./{localJson}').st_size
 if fileSize != 0: 
-  with open('./jobSearchData.json', 'r') as file:
+  with open(f'./{localJson}', 'r') as file:
     jobsInJson = json.load(file)
 else:
   jobsInJson = []
@@ -30,7 +25,7 @@ else:
 print(f'Opened local Json document, found {len(jobsInJson)} jobs...')
 
 #Open google spreadsheet, get existing job IDs
-sheet = googleSheets.open('Automated Job Search')
+sheet = googleSheets.open(googleSheetsFile)
 wks = sheet[0]
 existingIds = wks.get_col(3, include_tailing_empty=False) # Get job numbers in column 1
 numRowsExisting = len(existingIds)
@@ -105,7 +100,7 @@ print('Finished cleaning up search results...')
 
 # Write to JSON file
 if len(jobsInJson) != 0:
-  with open('./jobSearchData.json', 'w') as newFile:
+  with open(f'./{localJson}', 'w') as newFile:
     newFile.write(json.dumps(jobsInJson))
     newFile.close()
   print(f'Wrote {len(jobsInJson)} jobs to local JSON file!')
