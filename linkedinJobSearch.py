@@ -18,6 +18,7 @@ api = Linkedin(user, pw)
 
 # Search jobs by given parameters
 def linkedinJobSearch(searchKeywords, location, radius, remoteOption, resultsNumber):
+  print('Starting job search...')
 
   # Search new jobs
   searchResults = api.search_jobs(
@@ -27,11 +28,12 @@ def linkedinJobSearch(searchKeywords, location, radius, remoteOption, resultsNum
     remote=remoteOption,
     limit=resultsNumber
   )
-  print(f'Received {len(searchResults)} search results...')
+  print(f'Received {len(searchResults)} search results!')
   return searchResults
 
 # Iterate search results to get full job data by ID
 def sortJobResults(searchList, existingIds, jobsInJson):
+  print('Cleaning up search results...')
   newJobs = []
   for result in searchList:
     jobId = result.get('dashEntityUrn').removeprefix('urn:li:fsd_jobPosting:') # get the value holding job number (and remove extraneous prefix)
@@ -83,5 +85,4 @@ def sortJobResults(searchList, existingIds, jobsInJson):
   # pprint.pp(jobsInJson)
   # pprint.pp(f'new jobs: {newJobs}')  
   print('Finished cleaning up search results...')
-
-  return jobsInJson, newJobs;
+  return jobsInJson, newJobs

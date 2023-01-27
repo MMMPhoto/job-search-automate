@@ -43,15 +43,17 @@ def writeToJson(jobsInJson):
     with open(f'./{localJson}', 'w') as newFile:
       newFile.write(json.dumps(jobsInJson))
       newFile.close()
-    return f'Wrote {len(jobsInJson)} jobs to local JSON file!'
+    print(f'Wrote {len(jobsInJson)} total jobs back  to local JSON file!')
   else:
-    return 'There were no new jobs to write to local JSON file!'
+    print('There were no jobs to write to local JSON file!')
+  return
 
 # Write to google drive:
 def writeToGoogleDrive(newJobs, wks, numRowsExisting):
   if len(newJobs) != 0:    
     df = pd.DataFrame(newJobs) # create dataframe
     wks.set_dataframe(df, ((numRowsExisting + 1),2), copy_head=False, extend=True) # set dataframe to sheet on first empty row
-    return f'Wrote {len(newJobs)} new jobs to google sheet!'
+    print(f'Wrote {len(newJobs)} new jobs to google sheet!')
   else:
-    return 'There were no new jobs to write to google sheet!'
+    print('There were no new jobs to write to google sheet!')
+  return
