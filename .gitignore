@@ -128,5 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Google
+# Google API keys
 job-search-service.json
+
+# Local JSON results file
+jobSearchData.json

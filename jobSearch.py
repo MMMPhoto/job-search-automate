@@ -24,7 +24,7 @@ if fileSize != 0:
     jobsInJson = json.load(file)
 else:
   jobsInJson = []
-pprint.pp(jobsInJson)
+# pprint.pp(jobsInJson)
 print(f'Opened local Json document, found {len(jobsInJson)} jobs...')
 
 #Open google spreadsheet, get existing job IDs
@@ -39,9 +39,9 @@ print(f'Opened google sheet, found {len(existingIds)} jobs...')
 searchResults = api.search_jobs(
   keywords='software developer',
   location_name='Atlanta, Georgia, United States',
-  distance=3000,
+  # distance=3000,
   listed_at=604800,
-  remote=True,
+  # remote=True,
   limit=-1
 )
 # pprint.pp(searchResults)
@@ -106,7 +106,7 @@ if len(jobsInJson) != 0:
   with open('./jobSearchData.json', 'w') as newFile:
     newFile.write(json.dumps(jobsInJson))
     newFile.close()
-  print(f'Wrote {len(jobsInJson)} new jobs data to local JSON file!')
+  print(f'Wrote {len(jobsInJson)} jobs to local JSON file!')
 else:
   print('There were no new jobs to write to local JSON file!')
 
@@ -114,6 +114,6 @@ else:
 if len(newJobs) != 0:    
   df = pd.DataFrame(newJobs) # create dataframe
   wks.set_dataframe(df, ((numRowsExisting + 1),2), copy_head=False, extend=True) # set dataframe to sheet on first empty row
-  print(f'Wrote {len(newJobs)} new jobs data to google sheet!')
+  print(f'Wrote {len(newJobs)} new jobs to google sheet!')
 else:
   print('There were no new jobs to write to google sheet!')
