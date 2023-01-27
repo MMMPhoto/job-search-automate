@@ -12,6 +12,8 @@ from experienceRegex import yearsSearch, yearsContextSearch, skillsSearch
 load_dotenv()
 user = os.getenv('LINKEDIN_USERNAME')
 pw = os.getenv('LINKEDIN_PW')
+localJson = os.getenv('local_JSON_file')
+googleSheetsFile = os.getenv('google_sheets_file')
 googleSheets = pygsheets.authorize(service_file='./job-search-service.json')
 
 # Autheniticate Linkedin account
