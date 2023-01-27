@@ -12,7 +12,7 @@ from linkedinJobSearch import linkedinJobSearch, sortJobResults
 # Search for new jobs by parameters
 jobsInJson = readFromJson()
 wks, existingIds, numRowsExisting = readFromSheets()
-searchResults = linkedinJobSearch('software developer', 'Atlanta, Georgia, United States', 25, False, -1) # software developer non-remote Atlanta jobs, no limit
+searchResults = linkedinJobSearch('software developer', 'Atlanta, Georgia, United States', 25, False, 10) # software developer non-remote Atlanta jobs, no limit
 newJobsInJson, newJobs = sortJobResults(searchResults, existingIds, jobsInJson)
 writeToJson(newJobsInJson)
 writeToGoogleDrive(newJobs, wks, numRowsExisting)
