@@ -47,13 +47,13 @@ def sortJobResults(searchList, existingIds, jobsInJson):
       jobClean['Date Added'] = dt.datetime.now().date().strftime('%m/%d/%Y')
       jobClean['Job ID'] = jobId
       jobClean['URL'] = f'https://www.linkedin.com/jobs/view/{jobId}/'
-      jobClean['Job Title'] = job['title']
-      jobClean['Company'] = job['companyDetails']['com.linkedin.voyager.deco.jobs.web.shared.WebCompactJobPostingCompany']['companyResolutionResult']['name']
-      jobClean['Description'] = job['description']['text']
-      jobClean['Years Experience'] = yearsSearch(job['description']['text'])
-      jobClean['Years Context'] = yearsContextSearch(job['description']['text'])
-      jobClean['Skills'] = skillsSearch(job['description']['text'])
-      jobClean['Remote Allowed'] = job['workRemoteAllowed']
+      jobClean['Job Title'] = job.get('title')
+      jobClean['Company'] = job.get('companyDetails', {}).get('com.linkedin.voyager.deco.jobs.web.shared.WebCompactJobPostingCompany', {}).get('companyResolutionResult', {}).get('name')
+      jobClean['Description'] = job.get('description', {}).get('text')
+      jobClean['Years Experience'] = yearsSearch(jobClean['Description'])
+      jobClean['Years Context'] = yearsContextSearch(jobClean['Description'])
+      jobClean['Skills'] = skillsSearch(jobClean['Description'])
+      jobClean['Remote Allowed'] = job.get('workRemoteAllowed')
 
       jobsInJson.append(jobClean) # add to JSON job list
 

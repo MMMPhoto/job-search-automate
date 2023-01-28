@@ -41,7 +41,7 @@ def writeToJson(jobsInJson):
     with open(f'./{localJson}', 'w') as newFile:
       newFile.write(json.dumps(jobsInJson))
       newFile.close()
-    print(f'Wrote {len(jobsInJson)} total jobs back  to local JSON file!')
+    print(f'Wrote {len(jobsInJson)} total jobs back to local JSON file!')
   else:
     print('There were no jobs to write to local JSON file!')
   return
