@@ -6,10 +6,9 @@ This work is licensed under a <a rel="license" href="http://creativecommons.org/
 
 ## Description
 
-Job Search Automate is a Python application that uses regex methods to sort and categorize LinkedIn API data based on keywords, automating a process that otherwise would take significant time and effort. The App uses the unofficial [LinkedIn API](https://github.com/tomquirk/linkedin-api) created by [Tom Quirk](https://github.com/tomquirk) and adds some extra keyword search functionality to filter and categorize results.
+Job Search Automate is a Python application that uses regex methods to sort and categorize LinkedIn API data based on keywords, automating a process that otherwise would take significant time and effort. The App uses the unofficial [LinkedIn API](https://github.com/tomquirk/linkedin-api) created by [Tom Quirk](https://github.com/tomquirk) and adds some extra keyword search functionality to filter and categorize job search results.
 
-Currently the app uses hardcoded variables as search inputs and 
-The Social Network API program is a Node.js server-side application that runs a Mongo NoSQL database containing data for a social media platform. The program uses the Mongoose package for object modeling and communicating with the database, and the Express package for routing. Since the program is entirely back-end, it's helpful to use an API tool such as Postman to make GET, POST, PUT, and DELETE calls to view and manipulate the database.
+Currently the app uses hardcoded variables as search inputs and specifically tailored regex methods for filtering. The goal for future development is to add the ability for the user easily input custom variables, possibly even developing a front-end UI for this purpose. Developing customizable regex filtering will be a little more difficult, but I am exploring this as well.
 
 ## Table of Contents
 
