@@ -21,7 +21,11 @@ Currently the app uses hardcoded variables as search inputs and specifically tai
 
 ## Installation
 
+Installation details to come.
+
 ## Usage
+
+Usage details to come.
 
 ## Features
 
