@@ -12,12 +12,12 @@ def readSearchWrite(searchKeywords, location, radius, remoteOption, resultsNumbe
   writeToGoogleDrive(newJobs, wks, numRowsExisting)
 
 
-readSearchWrite('software developer', 'Atlanta, Georgia, United States', 25, False, )
+readSearchWrite('software developer', 'Atlanta, Georgia, United States', 25, False, 30)
 
-# Run all searches
-readSearchWrite('software developer', 'Atlanta, Georgia, United States', 25, False, -1) # software developer non-remote Atlanta jobs, no limit
-readSearchWrite('software developer', 'Atlanta, Georgia, United States', 3000, True, -1) # software developer remote jobs, no limit
-readSearchWrite('react developer', 'Atlanta, Georgia, United States', 25, False, -1) # react developer remote jobs, no limit
-readSearchWrite('react developer', 'Atlanta, Georgia, United States', 3000, True, -1) # react developer remote jobs, no limit
+# # Run all searches
+# readSearchWrite('software developer', 'Atlanta, Georgia, United States', 25, False, -1) # software developer non-remote Atlanta jobs, no limit
+# readSearchWrite('software developer', 'Atlanta, Georgia, United States', 3000, True, -1) # software developer remote jobs, no limit
+# readSearchWrite('react developer', 'Atlanta, Georgia, United States', 25, False, -1) # react developer remote jobs, no limit
+# readSearchWrite('react developer', 'Atlanta, Georgia, United States', 3000, True, -1) # react developer remote jobs, no limit
 
 print('Finished! Closing program.')

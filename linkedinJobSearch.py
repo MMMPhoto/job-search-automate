@@ -25,7 +25,7 @@ def linkedinJobSearch(searchKeywords, location, radius, remoteOption, resultsNum
     location_name=location,
     distance=radius,
     remote=remoteOption,
-    listed_at=604800,
+    listed_at=604800, # 604800 == Past 7 days. Using default value (24 hrs) means result is less accurate for some reason
     limit=resultsNumber
   )
   print(f'Received {len(searchResults)} search results!')
@@ -64,6 +64,8 @@ def sortJobResults(searchList, existingIds, jobsInJson):
       jobClean['Years Experience'] = yearsSearch(jobClean['Description'])
       jobClean['Years Context'] = yearsContextSearch(jobClean['Description'])
       jobClean['Skills'] = skillsSearch(jobClean['Description'])
+
+      print(jobClean['Years Experience'])
 
       jobsInJson.append(jobClean) # add to JSON job list
 
