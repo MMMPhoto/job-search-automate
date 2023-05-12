@@ -25,6 +25,7 @@ def linkedinJobSearch(searchKeywords, location, radius, remoteOption, resultsNum
     location_name=location,
     distance=radius,
     remote=remoteOption,
+    listed_at=604800,
     limit=resultsNumber
   )
   print(f'Received {len(searchResults)} search results!')
@@ -41,7 +42,7 @@ def sortJobResults(searchList, existingIds, jobsInJson):
     if jobId not in existingIds:
 
       job = api.get_job(jobId) # search for job by ID
-        
+
       # Create new dictionary with only necessary data
       jobClean = {}
       jobClean['Date Added'] = dt.datetime.now().date().strftime('%m/%d/%Y')
@@ -54,6 +55,15 @@ def sortJobResults(searchList, existingIds, jobsInJson):
       jobClean['Years Context'] = yearsContextSearch(jobClean['Description'])
       jobClean['Skills'] = skillsSearch(jobClean['Description'])
       jobClean['Remote Allowed'] = job.get('workRemoteAllowed')
+
+      # Clean up time
+      now = dt.datetime.now()
+      rawTime = job.get('listedAt') / 1000
+      jobTime = dt.datetime.fromtimestamp(rawTime)
+      print(now - jobTime)
+      jobClean['Listed At'] = str(jobTime)
+      jobClean['Time ago'] = str(now - jobTime)
+
 
       jobsInJson.append(jobClean) # add to JSON job list
 

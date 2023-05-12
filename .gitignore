@@ -132,4 +132,7 @@ dmypy.json
 job-search-service.json
 
 # Local JSON results file
-jobSearchData.json
+jobSearchData.
+
+# VS Code settings
+.vscode
