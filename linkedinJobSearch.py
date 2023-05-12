@@ -43,27 +43,27 @@ def sortJobResults(searchList, existingIds, jobsInJson):
 
       job = api.get_job(jobId) # search for job by ID
 
-      # Create new dictionary with only necessary data
+      # Create new dictionary
       jobClean = {}
       jobClean['Date Added'] = dt.datetime.now().date().strftime('%m/%d/%Y')
-      jobClean['Job ID'] = jobId
-      jobClean['URL'] = f'https://www.linkedin.com/jobs/view/{jobId}/'
-      jobClean['Job Title'] = job.get('title')
-      jobClean['Company'] = job.get('companyDetails', {}).get('com.linkedin.voyager.deco.jobs.web.shared.WebCompactJobPostingCompany', {}).get('companyResolutionResult', {}).get('name')
-      jobClean['Description'] = job.get('description', {}).get('text')
-      jobClean['Years Experience'] = yearsSearch(jobClean['Description'])
-      jobClean['Years Context'] = yearsContextSearch(jobClean['Description'])
-      jobClean['Skills'] = skillsSearch(jobClean['Description'])
-      jobClean['Remote Allowed'] = job.get('workRemoteAllowed')
 
       # Clean up time
       now = dt.datetime.now()
       rawTime = job.get('listedAt') / 1000
       jobTime = dt.datetime.fromtimestamp(rawTime)
-      print(now - jobTime)
       jobClean['Listed At'] = str(jobTime)
-      jobClean['Time ago'] = str(now - jobTime)
-
+      jobClean['Time ago'] = str(now - jobTime).split('.')[0] # Trim the microseconds
+      
+      # Clean up other data
+      jobClean['Job ID'] = jobId
+      jobClean['URL'] = f'https://www.linkedin.com/jobs/view/{jobId}/'
+      jobClean['Job Title'] = job.get('title')
+      jobClean['Company'] = job.get('companyDetails', {}).get('com.linkedin.voyager.deco.jobs.web.shared.WebCompactJobPostingCompany', {}).get('companyResolutionResult', {}).get('name')
+      jobClean['Remote Allowed'] = job.get('workRemoteAllowed')
+      jobClean['Description'] = job.get('description', {}).get('text')
+      jobClean['Years Experience'] = yearsSearch(jobClean['Description'])
+      jobClean['Years Context'] = yearsContextSearch(jobClean['Description'])
+      jobClean['Skills'] = skillsSearch(jobClean['Description'])
 
       jobsInJson.append(jobClean) # add to JSON job list
 
