@@ -12,7 +12,7 @@ def readSearchWrite(searchKeywords, location, radius, remoteOption, resultsNumbe
   writeToGoogleDrive(newJobs, wks, numRowsExisting)
 
 
-readSearchWrite('software developer', 'Atlanta, Georgia, United States', 25, False, 30)
+readSearchWrite('software developer', 'Atlanta, Georgia, United States', 25, False, 200)
 
 # # Run all searches
 # readSearchWrite('software developer', 'Atlanta, Georgia, United States', 25, False, -1) # software developer non-remote Atlanta jobs, no limit

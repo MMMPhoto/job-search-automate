@@ -4,7 +4,7 @@ import re
 
 def filterYears(string):
   if string[:2].isdigit():
-    if int(string[:2]) > 17:
+    if int(string[:2]) > 17: #Only numbers 17 and below
         return False
   return True    
 
@@ -19,6 +19,7 @@ def yearsSearch(text):
   results = list(filter(filterYears, yearsExperienceRegex.findall(text)))
   # print(results)
   # results = list(filter(filterYears, results))
+  results.sort(reverse = True)
   print(results)
   return results
 

@@ -28,7 +28,8 @@ def readFromJson():
 def readFromSheets():
   sheet = googleSheets.open(googleSheetsFile)
   wks = sheet[0]
-  existingIds = wks.get_col(3, include_tailing_empty=False) # Get job numbers in column 1
+  existingIds = wks.get_col(5, include_tailing_empty=False) # Get job numbers in column 1
+  print(existingIds)
   numRowsExisting = len(existingIds)
   del existingIds[0]
   print(f'Opened google sheet, found {len(existingIds)} jobs...')
