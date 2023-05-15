@@ -3,9 +3,8 @@
 import re
 
 def filterYears(string):
-  if string[:2].isdigit():
-    if int(string[:2]) > 17: #Only numbers 17 and below
-        return False 
+  if string[:2].isdigit(): #Only numbers below 10
+    return False 
   return True    
 
 # Search for 'year(s)', with number preceding

@@ -32,6 +32,7 @@ def readFromSheets():
   numRowsExisting = len(existingIds)
   del existingIds[0] # Remove column title (row 1)
   print(f'Opened google sheet, found {len(existingIds)} jobs...')
+  print(existingIds)
   return wks, existingIds, numRowsExisting
 
 
