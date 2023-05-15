@@ -28,10 +28,9 @@ def readFromJson():
 def readFromSheets():
   sheet = googleSheets.open(googleSheetsFile)
   wks = sheet[0]
-  existingIds = wks.get_col(5, include_tailing_empty=False) # Get job numbers in column 1
-  print(existingIds)
+  existingIds = wks.get_col(4, include_tailing_empty=False) # Get job numbers in column 4
   numRowsExisting = len(existingIds)
-  del existingIds[0]
+  del existingIds[0] # Remove column title (row 1)
   print(f'Opened google sheet, found {len(existingIds)} jobs...')
   return wks, existingIds, numRowsExisting
 
@@ -51,7 +50,7 @@ def writeToJson(jobsInJson):
 def writeToGoogleDrive(newJobs, wks, numRowsExisting):
   if len(newJobs) != 0:    
     df = pd.DataFrame(newJobs) # create dataframe
-    wks.set_dataframe(df, ((numRowsExisting + 1),2), copy_head=False, extend=True) # set dataframe to sheet on first empty row
+    wks.set_dataframe(df, ((numRowsExisting + 1),3), copy_head=False, extend=True) # set dataframe to sheet on first empty row, third column
     print(f'Wrote {len(newJobs)} new jobs to google sheet!')
   else:
     print('There were no new jobs to write to google sheet!')

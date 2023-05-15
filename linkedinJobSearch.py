@@ -45,14 +45,12 @@ def sortJobResults(searchList, existingIds, jobsInJson):
 
       # Create new dictionary
       jobClean = {}
-      jobClean['Date Added'] = dt.datetime.now().date().strftime('%m/%d/%Y')
 
       # Clean up time
       now = dt.datetime.now()
       rawTime = job.get('listedAt') / 1000
       jobTime = dt.datetime.fromtimestamp(rawTime)
       jobClean['Listed At'] = str(jobTime)
-      jobClean['Time ago'] = str(now - jobTime).split('.')[0] # Trim the microseconds
       
       # Clean up other data
       jobClean['Job ID'] = jobId
